@@ -12,6 +12,7 @@ namespace ShowFinder
 {
     class Links
     {
+        //test
         Link self;
         Link previousepisode;
         Link nextepisode;
