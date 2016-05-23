@@ -10,17 +10,6 @@ using System.Threading.Tasks;
 
 namespace ShowFinder
 {
-    class Links
-    {
-        //test
-        Link self;
-        Link previousepisode;
-        Link nextepisode;
-    }
-    class Link
-    {
-        string href;
-    }
     class Program
     {
         //API: 9158E1025A950341
@@ -28,18 +17,43 @@ namespace ShowFinder
         {
             Console.WriteLine("Enter the name of a TV Show");
             var input = Console.ReadLine();
-            var airDate = "Invalid";                                
+            var airDate = "Invalid";
+            var prevDate = "Invalid";                             
             using (WebClient wc = new WebClient())
-            {
+            {                    
                 var json = wc.DownloadString(@"http://api.tvmaze.com/singlesearch/shows?q="+ input);
-                dynamic jsonObject = JsonConvert.DeserializeObject(json);
-                var nextEpisodeLink = jsonObject._links.nextepisode.href.Value;
-                json = wc.DownloadString(nextEpisodeLink);
-                jsonObject = JsonConvert.DeserializeObject(json);
-                airDate = jsonObject.airdate.Value+" "+jsonObject.airtime.Value+"EST";                     
-
+                dynamic showJsonObject = JsonConvert.DeserializeObject(json);
+                if (showJsonObject._links.nextepisode != null)
+                {
+                    var nextEpisodeLink = showJsonObject._links.nextepisode.href.Value;
+                    airDate = GetDateFromJson(wc, nextEpisodeLink);
+                }
+                else
+                {                                                      
+                    airDate = "Future episodes unknown"; 
+                }
+                
+                if (showJsonObject._links.previousepisode!= null)
+                {
+                    var prevEpisodeLink = showJsonObject._links.previousepisode.href.Value;
+                    prevDate = GetDateFromJson(wc, prevEpisodeLink);
+                }
+                else
+                {
+                    prevDate = "No previous episodes";
+                }
             }
-            Console.WriteLine(airDate);
+            Console.WriteLine("Next Episode: "+ airDate);
+            Console.WriteLine("Prev Episode: "+prevDate);
+            Console.ReadKey();
+        }
+
+        private static string GetDateFromJson(WebClient wc, dynamic nextEpisodeLink)
+        {
+            var json = wc.DownloadString(nextEpisodeLink);
+            dynamic jsonObject = JsonConvert.DeserializeObject(json);
+            var a = jsonObject.airstamp.Value;
+            return "S"+jsonObject.season+"E"+jsonObject.number.ToString("D2")+" - "+a.ToString();
         }
     }
 }
