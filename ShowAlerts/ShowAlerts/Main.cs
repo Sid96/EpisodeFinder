@@ -34,34 +34,27 @@ namespace ShowAlerts
                 return;
             }
 
-            Tuple<string, string> airDate;
-            Tuple<string, string> prevDate;
+            EpisodeInformation episode = new EpisodeInformation();
             
             using (WebClient wc = new WebClient())
             {
                 try {
                     var json = wc.DownloadString(@"http://api.tvmaze.com/singlesearch/shows?q=" + search.Text);
+                    
                     dynamic showJsonObject = JsonConvert.DeserializeObject(json);
+                    episode.SetEpisodeName(showJsonObject.name);
                     if (showJsonObject._links.nextepisode != null)
                     {
                         var nextEpisodeLink = showJsonObject._links.nextepisode.href.Value;
-                        airDate = GetDateFromJson(wc, nextEpisodeLink);
-                    }
-                    else
-                    {
-                        airDate = new Tuple<string, string>("Unknown", "Unknown");
-                    }
+                        episode.GetDateFromJson(wc, nextEpisodeLink, true);
+                    }  
 
                     if (showJsonObject._links.previousepisode != null)
                     {
                         var prevEpisodeLink = showJsonObject._links.previousepisode.href.Value;
-                        prevDate = GetDateFromJson(wc, prevEpisodeLink);
-                    }
-                    else
-                    {
-                        prevDate = new Tuple<string, string>("Unknown", "Unknown");
-                    }
-                    WriteToDB(search.Text, prevDate, airDate);
+                        episode.GetDateFromJson(wc, prevEpisodeLink, false);
+                    }                              
+                    WriteToDB(search.Text, episode);
                 }
                 catch (Exception ex)
                 {
@@ -100,32 +93,23 @@ namespace ShowAlerts
             }
             return false;
         }
-        private static void WriteToDB(string searchText, Tuple<string,string> prevDate, Tuple<string,string> airDate)
+        private static void WriteToDB(string searchText, EpisodeInformation episode)
         {
             var connStr = ConfigurationManager.ConnectionStrings["ShowAlerts.Properties.Settings.ShowDBConnectionString"].ConnectionString;
             using (var connection = new SqlConnection(connStr))
-            {   
+            {
                 var cmd = new SqlCommand("Insert into [dbo].[Table] Values (@ShowName, @PrevDate, @PrevEpisode,@NextDate, @NextEpisode)");
                 cmd.CommandType = CommandType.Text;
                 cmd.Connection = connection;
-                cmd.Parameters.AddWithValue("@ShowName",searchText);
-                cmd.Parameters.AddWithValue("@PrevDate", prevDate.Item1);
-                cmd.Parameters.AddWithValue("@PrevEpisode", prevDate.Item2);
-                cmd.Parameters.AddWithValue("@NextDate", airDate.Item1);
-                cmd.Parameters.AddWithValue("@NextEpisode", airDate.Item2);
+                cmd.Parameters.AddWithValue("@ShowName", episode.EpisodeName);
+                cmd.Parameters.AddWithValue("@PrevDate", episode.PrevDate);
+                cmd.Parameters.AddWithValue("@PrevEpisode", episode.PrevEpisode);
+                cmd.Parameters.AddWithValue("@NextDate",episode.NextDate);
+                cmd.Parameters.AddWithValue("@NextEpisode", episode.NextEpisode);
                 connection.Open();
                 cmd.ExecuteNonQuery();
             }
             System.Windows.Forms.MessageBox.Show("Success!");
-        }
-        private static Tuple<string,string> GetDateFromJson(WebClient wc, dynamic nextEpisodeLink)
-        {
-            var json = wc.DownloadString(nextEpisodeLink);
-            dynamic jsonObject = JsonConvert.DeserializeObject(json);
-            //var a = jsonObject.airstamp.Value;
-            var b = new Tuple<string, string>(jsonObject.airstamp.Value.ToString(),"S"+jsonObject.season+"E"+jsonObject.number.ToString("D2"));
-
-            return b;
         }
 
         private void Main_FormClosed(object sender, FormClosedEventArgs e)
