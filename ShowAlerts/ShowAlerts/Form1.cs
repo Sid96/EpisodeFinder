@@ -21,6 +21,8 @@ namespace ShowAlerts
         {
             // TODO: This line of code loads data into the 'showDBDataSet.Table' table. You can move, or remove it, as needed.
             this.tableTableAdapter.Fill(this.showDBDataSet.Table);
+            tableBindingSource.Sort = "NextDate";                                                       
+            
             // TODO: This line of code loads data into the 'database1DataSet.Table' table. You can move, or remove it, as needed.
 
 
@@ -29,6 +31,12 @@ namespace ShowAlerts
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void Back_Click(object sender, EventArgs e)
+        {
+            new Main().Show();
+            this.Hide();
         }
     }
 }

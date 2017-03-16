@@ -38,6 +38,7 @@
             this.tableBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.showDBDataSet = new ShowAlerts.ShowDBDataSet();
             this.tableTableAdapter = new ShowAlerts.ShowDBDataSetTableAdapters.TableTableAdapter();
+            this.Back = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tableBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.showDBDataSet)).BeginInit();
@@ -54,10 +55,11 @@
             this.nextDateDataGridViewTextBoxColumn,
             this.nextEpisodeDataGridViewTextBoxColumn});
             this.dataGridView1.DataSource = this.tableBindingSource;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 12);
+            this.dataGridView1.Location = new System.Drawing.Point(8, 8);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(888, 269);
+            this.dataGridView1.Size = new System.Drawing.Size(592, 175);
             this.dataGridView1.TabIndex = 0;
             // 
             // showNameDataGridViewTextBoxColumn
@@ -104,14 +106,26 @@
             // 
             this.tableTableAdapter.ClearBeforeFill = true;
             // 
+            // Back
+            // 
+            this.Back.Location = new System.Drawing.Point(12, 188);
+            this.Back.Name = "Back";
+            this.Back.Size = new System.Drawing.Size(75, 23);
+            this.Back.TabIndex = 1;
+            this.Back.Text = "Back";
+            this.Back.UseVisualStyleBackColor = true;
+            this.Back.Click += new System.EventHandler(this.Back_Click);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(970, 334);
+            this.ClientSize = new System.Drawing.Size(647, 217);
+            this.Controls.Add(this.Back);
             this.Controls.Add(this.dataGridView1);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "View TV Shows";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
@@ -132,6 +146,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn prevEpisodeDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn nextDateDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn nextEpisodeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button Back;
     }
 }
 

@@ -35,9 +35,10 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(271, 12);
+            this.button1.Location = new System.Drawing.Point(181, 8);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(144, 35);
+            this.button1.Size = new System.Drawing.Size(96, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Add TV Show";
             this.button1.UseVisualStyleBackColor = true;
@@ -45,9 +46,10 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(271, 53);
+            this.button2.Location = new System.Drawing.Point(181, 34);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(144, 38);
+            this.button2.Size = new System.Drawing.Size(96, 25);
             this.button2.TabIndex = 1;
             this.button2.Text = "View TV Shows";
             this.button2.UseVisualStyleBackColor = true;
@@ -55,21 +57,24 @@
             // 
             // search
             // 
-            this.search.Location = new System.Drawing.Point(12, 16);
+            this.search.Location = new System.Drawing.Point(8, 10);
+            this.search.Margin = new System.Windows.Forms.Padding(2);
             this.search.Name = "search";
-            this.search.Size = new System.Drawing.Size(241, 26);
+            this.search.Size = new System.Drawing.Size(162, 20);
             this.search.TabIndex = 2;
             // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AcceptButton = this.button1;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(426, 105);
+            this.ClientSize = new System.Drawing.Size(284, 68);
             this.Controls.Add(this.search);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Main";
-            this.Text = "Main";
+            this.Text = "TV Show Alerts";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
